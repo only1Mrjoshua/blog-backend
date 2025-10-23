@@ -1,92 +1,26 @@
-annotated-types
-anyio
-bcrypt
-bitarray
-blinker
-certifi
-cffi
-charset-normalizer
-ckzg
-click
-colorama
-cryptography
-cytoolz
-dnspython
-ecdsa
-email_validator
-eth_abi
-eth-account
-eth-hash
-eth-keyfile
-eth-keys
-eth-rlp
-eth-typing
-eth-utils
 fastapi
-fastapi-cli
-fastapi-cloud-cli
-Flask
-Flask-Bcrypt
-Flask-JWT-Extended
-Flask-MySQLdb
-greenlet
-h11
-hexbytes
-httpcore
-httptools
-httpx
-idna
-itsdangerous
-Jinja2
-markdown-it-py
-MarkupSafe
-mdurl
-motor
-mysql
-mysql-connector-python
-mysqlclient
-orjson
-parsimonious
-passlib
-pillow
-pip
-pyasn1
-pycparser
-pycryptodome
-pydantic
-pydantic_core
-pydantic-extra-types
-pydantic-settings
-Pygments
-PyJWT
-pymongo
-PyMySQL
-python-dotenv
-python-jose
-python-multipart
-PyYAML
-regex
-reportlab
-requests
-RestrictedPython
-rich
-rich-toolkit
-rignore
-rlp
-rsa
-sentry-sdk
-shellingham
-six
-sniffio
-sqlalchemy
-starlette
-toolz
-typer
-typing_extensions
-typing-inspection
-ujson
-urllib3
+# ASGI server for Vercel
 uvicorn
-watchfiles
-websockets
-Werkzeug
+
+# HTTP client library (used by FastAPI/Starlette)
+httpx
+httpcore
+
+# MySQL Driver (Pure Python, compatible with Vercel)
+PyMySQL
+
+# Pydantic (Base for FastAPI data validation)
+pydantic
+pydantic-settings
+python-multipart  # For file uploads
+
+# Security & Authentication
+passlib           # For password hashing (e.g., bcrypt backend)
+python-jose[cryptography] # For JWT (FastAPI standard)
+PyJWT             # Alternative/redundant, keep one if needed. (python-jose is better)
+python-dotenv     # For local development .env files
+
+# HTTP and Utilities
+requests          # If you make external API calls
+anyio             # Async I/O backend
+sniffio           # Async library tool
