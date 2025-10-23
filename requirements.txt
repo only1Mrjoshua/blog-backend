@@ -78,7 +78,7 @@ sentry-sdk
 shellingham
 six
 sniffio
-SQLAlchemy
+sqlalchemy
 starlette
 toolz
 typer
