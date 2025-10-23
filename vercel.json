@@ -3,22 +3,13 @@
   "builds": [
     {
       "src": "main.py",
-      "use": "@vercel/python",
-      "config": {
-        "runtime": "python3.11",
-        "includeFiles": [
-          "requirements.txt",
-          "auth.py",
-          "models.py",
-          "database.py"
-        ]
-      }
+      "use": "@vercel/python"
     }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "main.py" }
-  ],
-  "env": {
-    "DATABASE_URL": "@mysql_url"
-  }
+    {
+      "src": "/(.*)",
+      "dest": "main.py"
+    }
+  ]
 }
