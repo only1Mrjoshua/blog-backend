@@ -1,5 +1,8 @@
-from datetime import date
-from fastapi import FastAPI, HTTPException, Depends, status
+from datetime import date, datetime
+import os
+import shutil
+from fastapi import FastAPI, File, Form, HTTPException, Depends, UploadFile, status
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, EmailStr
 from typing import Annotated, Optional
 from sqlalchemy import desc
@@ -9,17 +12,29 @@ import models
 from database import engine, SessionLocal
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from routers import comments, likes
 
+app = FastAPI(title="Blog API")
 
-app = FastAPI()
+app.include_router(comments.router)
+app.include_router(likes.router, prefix="/likes")
+
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 app.include_router(auth.router)
+
+UPLOAD_DIR = "uploads"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
 
 models.Base.metadata.create_all(bind=engine)
 
 # Allow frontend at 127.0.0.1:5500 to talk to backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5500"],  # frontend origin
+    allow_origins=["http://localhost:5500",
+                   "http://127.0.0.1:5500",
+                   "https://pmhfhd37-5500.uks1.devtunnels.ms"],  # frontend origin
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -143,14 +158,56 @@ async def read_newsletter_subscriptions(db: db_dependency):
     return subscriptions
 
 @app.post("/posts/", response_model=PostResponse, status_code=status.HTTP_201_CREATED)
-async def create_post(post: PostBase, db: db_dependency):
+async def create_post(
+    category: str = Form(...),
+    title: str = Form(...),
+    intro_content: str = Form(None),
+    content1: str = Form(None),
+    quote: str = Form(None),
+    quote_author: str = Form(None),
+    main_content: str = Form(None),
+    final_content: str = Form(None),
+    image1: UploadFile = File(None),
+    image2: UploadFile = File(None),
+    db: Session = Depends(get_db)
+):
+    # --- Save image1 ---
+    image1_url = None
+    if image1:
+        image1_path = os.path.join(UPLOAD_DIR, image1.filename)
+        with open(image1_path, "wb") as buffer:
+            shutil.copyfileobj(image1.file, buffer)
+        BASE_URL = "https://pmhfhd37-8000.uks1.devtunnels.ms"
+        image1_url = f"{BASE_URL}/{UPLOAD_DIR}/{image1.filename}"
+
+    # --- Save image2 ---
+    image2_url = None
+    if image2:
+        image2_path = os.path.join(UPLOAD_DIR, image2.filename)
+        with open(image2_path, "wb") as buffer:
+            shutil.copyfileobj(image2.file, buffer)
+        BASE_URL = "https://pmhfhd37-8000.uks1.devtunnels.ms"
+        image2_url = f"{BASE_URL}/{UPLOAD_DIR}/{image2.filename}"
+
+    # --- Create post record ---
     db_post = models.Post(
-        **post.dict(),
-        created_at=date.today()  # 👈 always today's date
+        category=category,
+        title=title,
+        intro_content=intro_content,
+        content1=content1,
+        quote=quote,
+        quote_author=quote_author,
+        main_content=main_content,
+        final_content=final_content,
+        image1=image1_url,
+        image2=image2_url,
+        created_at=date.today()
     )
+
     db.add(db_post)
     db.commit()
     db.refresh(db_post)
+
     return db_post
 
 
