@@ -1,17 +1,32 @@
+# Web Framework and Server
 fastapi
 uvicorn
-httpx
-httpcore
-PyMySQL
-pydantic
-pydantic-settings
-python-multipart 
-passlib           # For password hashing (e.g., bcrypt backend)
-python-jose[cryptography] # For JWT (FastAPI standard)
-PyJWT             # Alternative/redundant, keep one if needed. (python-jose is better)
-python-dotenv     # For local development .env files
-requests          # If you make external API calls
-anyio             # Async I/O backend
-sniffio           # Async library tool
-sqlalchemy        # ORM for database interactions
-alembic           # For database migrations
+# Database and ORM
+sqlalchemy # ORM for database interactions
+alembic # For database migrations
+PyMySQL  # Specific driver for MySQL
+pydantic  # For data validation, schemas, and models
+pydantic-settings  # For managing environment variables (e.g., database connection)
+# Security and Authentication
+passlib[bcrypt]  # For password hashing (specifically including the bcrypt backend)
+python-jose[cryptography]  # For JWT handling (creation and decoding)
+# Dependencies from HTTP/I/O Operations
+starlette  # Base ASGI framework (often implicitly required by FastAPI)
+httpx  # If you are making any asynchronous external HTTP requests
+httpcore  # Required by httpx
+anyio  # Async I/O backend
+sniffio  # Async library tool
+# Utilities and Middleware
+python-multipart  # For handling form data and file uploads
+python-dotenv  # For local development .env file support
+requests  # If you are making any synchronous external HTTP requests (Async use httpx)
+PyJWT  # Included as a backup, but usually python-jose handles JWT needs
+    
+
+
+
+
+
+
+
+
