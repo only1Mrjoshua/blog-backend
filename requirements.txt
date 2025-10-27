@@ -1,26 +1,17 @@
 fastapi
-# ASGI server for Vercel
 uvicorn
-
-# HTTP client library (used by FastAPI/Starlette)
 httpx
 httpcore
-
-# MySQL Driver (Pure Python, compatible with Vercel)
 PyMySQL
-
-# Pydantic (Base for FastAPI data validation)
 pydantic
 pydantic-settings
-python-multipart  # For file uploads
-
-# Security & Authentication
+python-multipart 
 passlib           # For password hashing (e.g., bcrypt backend)
 python-jose[cryptography] # For JWT (FastAPI standard)
 PyJWT             # Alternative/redundant, keep one if needed. (python-jose is better)
 python-dotenv     # For local development .env files
-
-# HTTP and Utilities
 requests          # If you make external API calls
 anyio             # Async I/O backend
 sniffio           # Async library tool
+sqlalchemy        # ORM for database interactions
+alembic           # For database migrations
