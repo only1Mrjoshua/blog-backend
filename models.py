@@ -29,7 +29,12 @@ class Post(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     category = Column(String(100), nullable=False)
-    created_at = Column(Date, default=date.today)
+    created_at = Column(
+    DateTime, 
+    # Use server_default to have the database itself set the value 
+    # Use func.now() which SQLAlchemy translates to the appropriate database function
+    server_default=func.now()
+)
     title = Column(String(255), nullable=False)
     image1 = Column(String(255), nullable=True)
     intro_content = Column(Text, nullable=True)
@@ -61,7 +66,12 @@ class Comment(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     content = Column(Text, nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    created_at = Column(
+    DateTime, 
+    # Use server_default to have the database itself set the value 
+    # Use func.now() which SQLAlchemy translates to the appropriate database function
+    server_default=func.now()
+)
 
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     post_id = Column(Integer, ForeignKey("posts.id", ondelete="CASCADE"), nullable=False)
@@ -74,7 +84,12 @@ class Like(Base):
     __tablename__ = "likes"
 
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    created_at = Column(
+    DateTime, 
+    # Use server_default to have the database itself set the value 
+    # Use func.now() which SQLAlchemy translates to the appropriate database function
+    server_default=func.now()
+)
 
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     post_id = Column(Integer, ForeignKey("posts.id", ondelete="CASCADE"), nullable=False)
